@@ -39,7 +39,7 @@ if uploaded_file:
         image = Image.open(uploaded_file)
 
         # Display the uploaded image
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.image(image, caption="Uploaded Image", use_container_width=True)
 
         # Perform inference
         results = model(image)
@@ -48,7 +48,7 @@ if uploaded_file:
         annotated_image = results[0].plot()
 
         # Display the annotated image in the Streamlit app
-        st.image(annotated_image, caption="Detected Objects", use_column_width=True)
+        st.image(annotated_image, caption="Detected Objects", use_container_width=True)
 
         # Convert annotated image to byte stream for downloading
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
@@ -81,7 +81,7 @@ if uploaded_file:
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
 
             # Display the page as an image
-            st.image(img, caption=f"Page {i+1}", use_column_width=True)
+            st.image(img, caption=f"Page {i+1}", use_container_width=True)
 
             # Process the page with YOLO detection
             results = model(img)
@@ -90,7 +90,7 @@ if uploaded_file:
             annotated_image = results[0].plot()
 
             # Display the annotated image in the Streamlit app
-            st.image(annotated_image, caption=f"Detected Objects - Page {i+1}", use_column_width=True)
+            st.image(annotated_image, caption=f"Detected Objects - Page {i+1}", use_container_width=True)
 
             # Convert annotated image to byte stream for downloading
             annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
