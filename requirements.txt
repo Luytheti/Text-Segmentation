@@ -1,0 +1,7 @@
+gdown
+streamlit
+ultralytics
+Pillow
+pdf2image
+opencv-python
+PyMuPDF
