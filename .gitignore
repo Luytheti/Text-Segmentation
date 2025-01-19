@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Model files (large files)
+models/
+*.pt
+*.pth
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Streamlit specific
+.streamlit/
+
+# Misc
+.DS_Store
