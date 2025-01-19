@@ -6,8 +6,15 @@ import tempfile
 import os
 import cv2
 import fitz  # PyMuPDF
-# Load the YOLO model
-model = YOLO("yolov10x_best.pt")
+import torch 
+from model_loader import load_model
+
+# Step 1: Load the model
+model = load_model()
+
+if model is None:
+    st.error("Failed to load the model. Please check your internet connection and try again.")
+    st.stop()
 
 # Streamlit App
 # Title with HTML styling using Markdown
