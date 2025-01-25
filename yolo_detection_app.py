@@ -13,7 +13,7 @@ from model_loader import load_model
 import pytesseract
 
 # Set Tesseract command for Windows
-pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 # Step 1: Load the model
 model = load_model()
