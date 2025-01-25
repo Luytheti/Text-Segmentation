@@ -10,6 +10,7 @@ import pytesseract
 import numpy as np
 from model_loader import load_model
 
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 # Step 1: Load the model
 model = load_model()
 
