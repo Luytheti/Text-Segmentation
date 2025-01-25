@@ -25,8 +25,8 @@ if model is None:
 # Streamlit App
 st.markdown("""
     <div style="text-align: center;">
-        <h2 style='color: yellow; font-size: 15px;'>Rajas Daryapurkar</h2>
-        <h1 style='color: green; font-size: 60px;'>Text Segmentation using YOLOv10x</h1>
+        <h2 style='color: red; font-size: 15px;'>Rajas Daryapurkar</h2>
+        <h1 style='color: white; font-size: 60px;'>Document Segmenting and text retrival</h1>
     </div>
 """, unsafe_allow_html=True)
 
