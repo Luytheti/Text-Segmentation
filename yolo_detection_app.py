@@ -6,11 +6,15 @@ import tempfile
 import os
 import cv2
 import fitz  # PyMuPDF
-import pytesseract
 import numpy as np
 from model_loader import load_model
 
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
+import pytesseract
+
+# Set Tesseract command for Windows
+pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
+
 # Step 1: Load the model
 model = load_model()
 
@@ -74,7 +78,8 @@ def process_image(image, model, page_num=None):
     annotated_image = results[0].plot()
     st.image(annotated_image, caption="Detected Objects", use_container_width=True)
 
-    # Perform OCR on each detected region
+    # Collect all detected regions with their coordinates and text
+    detected_regions = []
     for idx, box in enumerate(results[0].boxes.xyxy):
         x1, y1, x2, y2 = map(int, box.tolist())
         x1, y1, x2, y2 = add_padding(np.array(image), (x1, y1, x2, y2))
@@ -87,46 +92,50 @@ def process_image(image, model, page_num=None):
             # Perform OCR with Tesseract
             custom_config = r'--psm 6'  # Treats the image as a single block of text
             ocr_text = pytesseract.image_to_string(cropped_region, config=custom_config)
+            detected_regions.append((y1, x1, ocr_text.strip()))  # Include y1, x1 for sorting
 
-            # Calculate dynamic height for the text area
-            num_lines = ocr_text.count('\n') + 1  # Count lines in the text
-            text_area_height = max(100, num_lines * 20)  # Minimum height of 100, adjust multiplier as needed
+    # Sort detected regions by position (top-to-bottom, left-to-right)
+    detected_regions.sort(key=lambda region: (region[0], region[1]))
 
-            # Display cropped region and OCR text side by side
-            col1, col2 = st.columns(2)
-            with col1:
-                st.image(cropped_region, caption=f"Cropped Region {idx + 1}", use_container_width=True)
-            with col2:
-                # Use a unique key for each text area, combining page number and idx for uniqueness
-                unique_key = f"text_area_{page_num}_{idx}" if page_num is not None else f"text_area_{idx}"
-                st.text_area(
-                    f"Recognized Text {idx + 1}", 
-                    ocr_text, 
-                    height=text_area_height, 
-                    key=unique_key
-                )
+    # Combine all extracted text into a single block in the correct order
+    combined_text = "\n\n".join([text for _, _, text in detected_regions])
+
+    # Display the combined text
+    st.text_area(
+        "Extracted Text",
+        combined_text,
+        height=300,  # Adjust the height as needed
+    )
+
+
 
 # In your main block, pass the page number when processing PDFs
 if uploaded_file:
     file_type = uploaded_file.name.split('.')[-1].lower()
 
     if file_type in ["jpg", "jpeg", "png"]:
+        # Process uploaded image files
         image = Image.open(uploaded_file)
         st.image(image, caption="Uploaded Image", use_container_width=True)
-        process_image(image, model)
+        process_image(image, model, page_num=0)
 
     elif file_type == "pdf":
+        # Handle PDF files
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf_file:
             temp_pdf_path = temp_pdf_file.name
             temp_pdf_file.write(uploaded_file.getvalue())
 
-        doc = fitz.open(temp_pdf_path)
+        try:
+            # Open the PDF document
+            doc = fitz.open(temp_pdf_path)
 
-        for i in range(doc.page_count):
-            page = doc.load_page(i)
-            pix = page.get_pixmap()
-            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            st.image(img, caption=f"Page {i+1}", use_container_width=True)
-            process_image(img, page_num=i+1)  # Pass page number to the function
-
-        os.remove(temp_pdf_path)
+            for i in range(doc.page_count):
+                # Process each page of the PDF
+                page = doc.load_page(i)
+                pix = page.get_pixmap()
+                img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                st.image(img, caption=f"Page {i+1}", use_container_width=True)
+                process_image(img, model=model, page_num=i + 1)  # Pass page number to the function
+        finally:
+            # Ensure the temporary file is deleted
+            os.remove(temp_pdf_path)
