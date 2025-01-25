@@ -26,7 +26,7 @@ if model is None:
 st.markdown("""
     <div style="text-align: center;">
         <h2 style='color: #dc7ef3; font-size: 15px;'>Rajas Daryapurkar</h2>
-        <h1 style='color: #8cf3ea; font-size: 60px;'>Document Segmenting and text retrival</h1>
+        <h1 style='color: #8cf3ea; font-size: 60px;'>Document Segmenting and Text Retrival</h1>
     </div>
 """, unsafe_allow_html=True)
 
