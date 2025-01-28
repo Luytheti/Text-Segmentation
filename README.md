@@ -14,9 +14,3 @@ This is a powerful text segmentation application built using YOLOv10x, Streamlit
 - Python 3.8+
 - GPU recommended for optimal performance
 
-## 🚀 Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/text-segmentation-app.git
-cd text-segmentation-app
