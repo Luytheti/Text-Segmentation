@@ -1,4 +1,4 @@
-# 🔍 Document Segmentation & Text Retrieval
+#  Document Segmentation & Text Retrieval
 
 > **AI-powered document analysis pipeline** — upload any image or PDF, detect structured regions with YOLOv10, extract text with Tesseract OCR, and chat with your document using a RAG pipeline backed by Google Gemini.
 
