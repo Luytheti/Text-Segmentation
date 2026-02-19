@@ -1,0 +1,51 @@
+# ---- Model weights ----
+models/
+*.pt
+*.pth
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+
+# ---- Streamlit cache ----
+.streamlit/
+*.streamlit/
+
+# ---- HuggingFace cache ----
+.cache/
+~/.cache/huggingface/
+
+# ---- Temp / output files ----
+*.tmp
+*.log
+outputs/
+full_report.json
+report.md
+report_with_qa.md
+
+# ---- Uploaded documents (user data) ----
+uploads/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# ---- API keys (never commit these) ----
+.env
+secrets.toml
+.streamlit/secrets.toml
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- IDE ----
+.vscode/
+.idea/
+*.swp
